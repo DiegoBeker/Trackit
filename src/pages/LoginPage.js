@@ -1,15 +1,72 @@
+import axios from "axios";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.png"
+import { BASE_URL } from "../constants/urls";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function LoginPage() {
+    const [body, setBody] = useState({ email: "", password: "" });
+    const [waiting, setWaiting] = useState(false);
+
+    function handleChange(event) {
+        setBody({ ...body, [event.target.name]: event.target.value })
+    }
+
+    function login(event) {
+        event.preventDefault();
+        setWaiting(true);
+        axios.post(`${BASE_URL}/auth/login`, body)
+            .then((response) => {
+                console.log(response.data)
+                setTimeout(() => {
+                    setWaiting(false);
+                }, 2000);
+            })
+            .catch(err => console.log(err.data.message));
+    }
+
     return (
         <PageContainer>
             <img src={logo} alt="track it" />
-            <Form>
-                <input type="email" placeholder="email"></input>
-                <input type="password" placeholder="senha"></input>
-                <button type="submit">Entrar</button>
+            <Form onSubmit={login}>
+                <input
+                    type="email"
+                    placeholder="email"
+                    name="email"
+                    value={body.email}
+                    onChange={handleChange}
+                    required
+                    disabled={waiting}
+                />
+                <input
+                    type="password"
+                    placeholder="senha"
+                    name="password"
+                    value={body.password}
+                    onChange={handleChange}
+                    required
+                    disabled={waiting}
+                />
+                <button disabled={waiting} type="submit">
+                    {
+                        waiting
+                            ?
+                            <ThreeDots
+                                height="40"
+                                width="40"
+                                radius="26"
+                                color="#FFFFFF"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
+                            :
+                            "Entrar"
+                    }
+                </button>
             </Form>
             <Link to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
@@ -50,8 +107,13 @@ const Form = styled.form`
         font-weight: 400;
         font-size: 20px;
         line-height: 25px;
-        color: #DBDBDB;
         padding: 0 11px;
+        &::placeholder{
+            color: #DBDBDB;
+        }
+        &:disabled{
+            background-color: #F2F2F2;
+        }
     }
     button{
         width: 303px;
@@ -64,5 +126,11 @@ const Form = styled.form`
         font-size: 20.976px;
         line-height: 26px;
         color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:disabled{
+            opacity: 0.7;
+        }
     }
 `;

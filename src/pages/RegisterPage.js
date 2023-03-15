@@ -1,18 +1,96 @@
+import axios from "axios";
+import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.png"
+import {BASE_URL} from "../constants/urls"
 
-export default function RegisterPage(){
+
+export default function RegisterPage() {
+    const [form,setForm] = useState({email:"", password:"", name:"", image:""});
+    const [waiting, setWaiting] = useState(false);
+    const navigate = useNavigate();
+    
+    function handleChange(event){
+        setForm({...form, [event.target.name]: event.target.value})
+    }
+
+    function register(event){
+        event.preventDefault();
+        const body = {...form};
+        setWaiting(true);
+
+        axios.post(`${BASE_URL}/auth/sign-up`,body)
+        .then((response)=> {
+            console.log(response);
+            setWaiting(false);
+            navigate("/");
+        })
+        .catch((err) => console.log(err));
+    }
     return (
         <PageContainer>
             <img src={logo} alt="track it" />
-            <Form>
-                <input type="email" placeholder="email"></input>
-                <input type="password" placeholder="senha"></input>
-                <input type="text" placeholder="nome"></input>
-                <input type="url" placeholder="foto"></input>
-                <button type="submit">Cadastrar</button>
+            <Form onSubmit={register}>
+                <input
+                    type="email"
+                    placeholder="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    disabled={waiting}
+                />
+                <input
+                    type="password"
+                    placeholder="senha"
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    required
+                    disabled={waiting}
+                />
+                <input
+                    type="text"
+                    placeholder="nome"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                    disabled={waiting}
+                />
+                <input
+                    type="url"
+                    placeholder="foto"
+                    name="image"
+                    value={form.image}
+                    onChange={handleChange}
+                    required
+                    disabled={waiting}
+                />
+                <button disabled={waiting} type="submit">
+                    {
+                        waiting
+                            ?
+                            <ThreeDots
+                                height="40"
+                                width="40"
+                                radius="26"
+                                color="#FFFFFF"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
+                            :
+                            "Cadastrar"
+                    }
+                </button>
             </Form>
-            <p>Já tem um conta? Faça login!</p>
+            <Link to="/">
+                <p>Já tem um conta? Faça login!</p>
+            </Link>
         </PageContainer>
     );
 }
@@ -49,8 +127,13 @@ const Form = styled.form`
         font-weight: 400;
         font-size: 20px;
         line-height: 25px;
-        color: #DBDBDB;
         padding: 0 11px;
+        &::placeholder{
+            color: #DBDBDB;
+        }
+        &:disabled{
+            background-color: #F2F2F2;
+        }
     }
     button{
         width: 303px;
@@ -63,5 +146,11 @@ const Form = styled.form`
         font-size: 20.976px;
         line-height: 26px;
         color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:disabled{
+            opacity: 0.7;
+        }
     }
 `;
