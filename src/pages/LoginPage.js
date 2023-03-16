@@ -6,7 +6,7 @@ import logo from "../assets/logo.png"
 import { BASE_URL } from "../constants/urls";
 import { ThreeDots } from "react-loader-spinner";
 
-export default function LoginPage({setUser}) {
+export default function LoginPage({ setUser }) {
     const [body, setBody] = useState({ email: "", password: "" });
     const [waiting, setWaiting] = useState(false);
     const navigate = useNavigate();
@@ -22,12 +22,13 @@ export default function LoginPage({setUser}) {
             .then((response) => {
                 console.log(response.data)
                 setUser(response.data);
-                setTimeout(() => {
-                    setWaiting(false);
-                    navigate("/habitos");
-                }, 2000);
+                setWaiting(false);
+                navigate("/hoje");
             })
-            .catch(err => alert(err.response.data.message));
+            .catch(err => {
+                setWaiting(false);
+                alert(err.response.data.message);
+            });
     }
 
     return (
@@ -35,6 +36,7 @@ export default function LoginPage({setUser}) {
             <img src={logo} alt="track it" />
             <Form onSubmit={login}>
                 <input
+                    data-test="email-input"
                     type="email"
                     placeholder="email"
                     name="email"
@@ -44,6 +46,7 @@ export default function LoginPage({setUser}) {
                     disabled={waiting}
                 />
                 <input
+                    data-test="password-input"
                     type="password"
                     placeholder="senha"
                     name="password"
@@ -52,7 +55,7 @@ export default function LoginPage({setUser}) {
                     required
                     disabled={waiting}
                 />
-                <button disabled={waiting} type="submit">
+                <button data-test="login-btn" disabled={waiting} type="submit">
                     {
                         waiting
                             ?
@@ -71,7 +74,7 @@ export default function LoginPage({setUser}) {
                     }
                 </button>
             </Form>
-            <Link to="/cadastro">
+            <Link data-test="signup-link" to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
         </PageContainer>

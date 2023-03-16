@@ -1,15 +1,16 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import { BASE_URL } from "../constants/urls";
 import { UserContext } from "../cotexts/UserContext";
 import Daycard from "./DayCard";
 
-
 export default function AddHabit({ showAddWindow, setShowAddWindow }) {
     const [disabled, setDisabled] = useState(false);
     const [days, setDays] = useState([]);
     const [name, setName] = useState("");
+    const [waiting,setWaiting] = useState(false);
     const user = useContext(UserContext);
 
     function postHabit() {
@@ -19,34 +20,57 @@ export default function AddHabit({ showAddWindow, setShowAddWindow }) {
                 "Authorization": `Bearer ${user.token}`
             }
         }
+        setWaiting(true);
         setDisabled(true);
         console.log(body);
         axios.post(`${BASE_URL}/habits`, body, config)
         .then((response) => {
             console.log(response.data)
             setShowAddWindow(false);
+            setWaiting(false);
+            setDisabled(false);
+            setDays([])
         })
-        .catch((err) => console.log(err.response.data.message))
+        .catch((err) => {
+            setDisabled(false);
+            setWaiting(false);
+            alert(err.response.data.message);
+        })
     }
 
     return (
-        <AddContainer showAddWindow={showAddWindow}>
-            <input placeholder="nome do hábito" value={name} onChange={(e) => setName(e.target.value)} />
+        <AddContainer data-test="habit-create-container" showAddWindow={showAddWindow}>
+            <input data-test="habit-name-input" placeholder="nome do hábito" value={name} onChange={(e) => setName(e.target.value)} />
             <WeekContainer>
-                <Daycard id={1} name="D" disabled={disabled} days={days} setDays={setDays} selected={false} />
-                <Daycard id={2} name="S" disabled={disabled} days={days} setDays={setDays} selected={false} />
-                <Daycard id={3} name="T" disabled={disabled} days={days} setDays={setDays} selected={false} />
-                <Daycard id={4} name="Q" disabled={disabled} days={days} setDays={setDays} selected={false} />
-                <Daycard id={5} name="Q" disabled={disabled} days={days} setDays={setDays} selected={false} />
-                <Daycard id={6} name="S" disabled={disabled} days={days} setDays={setDays} selected={false} />
-                <Daycard id={7} name="S" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={0} name="D" disabled={disabled} days={days} setDays={setDays} />
+                <Daycard id={1} name="S" disabled={disabled} days={days} setDays={setDays} />
+                <Daycard id={2} name="T" disabled={disabled} days={days} setDays={setDays} />
+                <Daycard id={3} name="Q" disabled={disabled} days={days} setDays={setDays} />
+                <Daycard id={4} name="Q" disabled={disabled} days={days} setDays={setDays} />
+                <Daycard id={5} name="S" disabled={disabled} days={days} setDays={setDays} />
+                <Daycard id={6} name="S" disabled={disabled} days={days} setDays={setDays} />
             </WeekContainer>
             <ButtonContainer>
-                <CancelButton onClick={() => setShowAddWindow(false)}>Cancelar</CancelButton>
+                <CancelButton data-test="habit-create-cancel-btn" onClick={() => setShowAddWindow(false)}>Cancelar</CancelButton>
                 <SaveButton
+                    data-test="habit-create-save-btn"
                     onClick={postHabit}
                 >
-                    Salvar
+                    {
+                        waiting ?
+                            <ThreeDots
+                                height="40"
+                                width="40"
+                                radius="26"
+                                color="#FFFFFF"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
+                            :
+                            "Salvar"
+                    }
                 </SaveButton>
             </ButtonContainer>
         </AddContainer>
@@ -110,4 +134,7 @@ const SaveButton = styled.button`
     background: #52B6FF;
     border-radius: 5px;
     color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

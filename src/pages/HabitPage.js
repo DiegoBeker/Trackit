@@ -26,7 +26,12 @@ export default function HabitPage() {
     },[showAddWindow])
 
     if(habits === undefined){
-        return <>Carregando</>
+        return (
+            <PageContainer>
+                <NavBar/>
+                <BottomMenu/>
+            </PageContainer>
+        );
     }
 
     return (
@@ -34,7 +39,7 @@ export default function HabitPage() {
             <NavBar />
             <HabitMenu>
                 <h2>Meus Hábitos</h2>
-                <button onClick={() => setShowAddWindow(true)}>+</button>
+                <button data-test="habit-create-btn" onClick={() => setShowAddWindow(true)}>+</button>
             </HabitMenu>
             <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} />
             {
@@ -51,7 +56,7 @@ export default function HabitPage() {
 }
 
 const PageContainer = styled.div`
-    min-height: calc(100vh - 140px);
+    height: calc(100vh - 140px);
     margin: 70px 0px;
     padding: 8px 16px;
     display: flex;

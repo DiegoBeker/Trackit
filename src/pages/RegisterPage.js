@@ -34,6 +34,7 @@ export default function RegisterPage() {
             <img src={logo} alt="track it" />
             <Form onSubmit={register}>
                 <input
+                    data-test="email-input"
                     type="email"
                     placeholder="email"
                     name="email"
@@ -43,6 +44,7 @@ export default function RegisterPage() {
                     disabled={waiting}
                 />
                 <input
+                    data-test="password-input"
                     type="password"
                     placeholder="senha"
                     name="password"
@@ -52,6 +54,7 @@ export default function RegisterPage() {
                     disabled={waiting}
                 />
                 <input
+                    data-test="user-name-input"
                     type="text"
                     placeholder="nome"
                     name="name"
@@ -61,6 +64,7 @@ export default function RegisterPage() {
                     disabled={waiting}
                 />
                 <input
+                    data-test="user-image-input"
                     type="url"
                     placeholder="foto"
                     name="image"
@@ -69,7 +73,7 @@ export default function RegisterPage() {
                     required
                     disabled={waiting}
                 />
-                <button disabled={waiting} type="submit">
+                <button data-test="signup-btn" disabled={waiting} type="submit">
                     {
                         waiting
                             ?
@@ -88,7 +92,7 @@ export default function RegisterPage() {
                     }
                 </button>
             </Form>
-            <Link to="/">
+            <Link data-test="login-link" to="/">
                 <p>Já tem um conta? Faça login!</p>
             </Link>
         </PageContainer>

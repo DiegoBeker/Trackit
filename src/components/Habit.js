@@ -4,20 +4,20 @@ import Daycard from "./DayCard";
 
 
 export default function Habit({id,name,days}){
-    console.log(days);
+    
     return(
-        <HabitCard>
-            <p>{name}</p>
+        <HabitCard data-test="habit-container">
+            <p data-test="habit-name">{name}</p>
             <WeekContainer>
-                <Daycard id={1} name="D" disabled={true} selected={days.includes(1)}/>
-                <Daycard id={2} name="S" disabled={true} selected={days.includes(2)}/>
-                <Daycard id={3} name="T" disabled={true} selected={days.includes(3)}/>
-                <Daycard id={4} name="Q" disabled={true} selected={days.includes(4)}/>
-                <Daycard id={5} name="Q" disabled={true} selected={days.includes(5)}/>
-                <Daycard id={6} name="S" disabled={true} selected={days.includes(6)}/>
-                <Daycard id={7} name="S" disabled={true} selected={days.includes(7)}/>
+                <Daycard id={0} name="D" disabled={true} days={days}/>
+                <Daycard id={1} name="S" disabled={true} days={days}/>
+                <Daycard id={2} name="T" disabled={true} days={days}/>
+                <Daycard id={3} name="Q" disabled={true} days={days}/>
+                <Daycard id={4} name="Q" disabled={true} days={days}/>
+                <Daycard id={5} name="S" disabled={true} days={days}/>
+                <Daycard id={6} name="S" disabled={true} days={days}/>
             </WeekContainer>
-            <DeleteIcon>
+            <DeleteIcon data-test="habit-delete-btn">
                 <IoIosTrash/>
             </DeleteIcon>
         </HabitCard>
