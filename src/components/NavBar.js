@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "../cotexts/UserContext";
 
 export default function NavBar(){
+    const user = useContext(UserContext);
     return(
-        <NavBarContainer>
+        <NavBarContainer data-test="header">
             <h1>Trackit</h1>
-            <ProfilePicture src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQssDmIAoZmB55TKw2RuKXnH8IgNuUvflb5Hg&usqp=CAU" alt="Picture"/>
+            <ProfilePicture src={user.image} alt="Picture"/>
         </NavBarContainer>
     );
 }

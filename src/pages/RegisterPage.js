@@ -27,7 +27,7 @@ export default function RegisterPage() {
             setWaiting(false);
             navigate("/");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err.response.data.message));
     }
     return (
         <PageContainer>

@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 
 export default function BottomMenu() {
     return (
-        <MenuContainer>
+        <MenuContainer data-test="menu">
             <ButtonsContainer>
-                <Link to="/habitos">
+                <Link data-test="habit-link" to="/habitos">
                 <span>Habitos</span>
                 </Link>
-                <Link to="/hoje">
+                <Link data-test="today-link"  to="/hoje">
                 <CicleProgress>
                     <CircularProgressbar
                         value={33}
@@ -26,7 +26,7 @@ export default function BottomMenu() {
                     />
                 </CicleProgress>
                 </Link>
-                <Link to="/historico">
+                <Link data-test="history-link" to="/historico">
                 <span>Histórico</span>
                 </Link>
             </ButtonsContainer>
