@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.png"
 import { BASE_URL } from "../constants/urls";
 import { ThreeDots } from "react-loader-spinner";
 
-export default function LoginPage() {
+export default function LoginPage({setUser}) {
     const [body, setBody] = useState({ email: "", password: "" });
     const [waiting, setWaiting] = useState(false);
+    const navigate = useNavigate();
 
     function handleChange(event) {
         setBody({ ...body, [event.target.name]: event.target.value })
@@ -20,11 +21,13 @@ export default function LoginPage() {
         axios.post(`${BASE_URL}/auth/login`, body)
             .then((response) => {
                 console.log(response.data)
+                setUser(response.data);
                 setTimeout(() => {
                     setWaiting(false);
+                    navigate("/habitos");
                 }, 2000);
             })
-            .catch(err => console.log(err.data.message));
+            .catch(err => alert(err.response.data.message));
     }
 
     return (

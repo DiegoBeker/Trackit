@@ -1,29 +1,60 @@
+import axios from "axios";
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import { BASE_URL } from "../constants/urls";
+import { UserContext } from "../cotexts/UserContext";
 import Daycard from "./DayCard";
 
 
-export default function AddHabit(){
-    return(
-        <AddContainer>
-            <input placeholder="nome do hábito"/>
+export default function AddHabit({ showAddWindow, setShowAddWindow }) {
+    const [disabled, setDisabled] = useState(false);
+    const [days, setDays] = useState([]);
+    const [name, setName] = useState("");
+    const user = useContext(UserContext);
+
+    function postHabit() {
+        const body = {name:name, days: days}
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        setDisabled(true);
+        console.log(body);
+        axios.post(`${BASE_URL}/habits`, body, config)
+        .then((response) => {
+            console.log(response.data)
+            setShowAddWindow(false);
+        })
+        .catch((err) => console.log(err.response.data.message))
+    }
+
+    return (
+        <AddContainer showAddWindow={showAddWindow}>
+            <input placeholder="nome do hábito" value={name} onChange={(e) => setName(e.target.value)} />
             <WeekContainer>
-                <Daycard name ="D"/>
-                <Daycard name ="S"/>
-                <Daycard name ="T"/>
-                <Daycard name ="Q"/>
-                <Daycard name ="Q"/>
-                <Daycard name ="S"/>
-                <Daycard name ="S"/>
+                <Daycard id={1} name="D" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={2} name="S" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={3} name="T" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={4} name="Q" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={5} name="Q" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={6} name="S" disabled={disabled} days={days} setDays={setDays} selected={false} />
+                <Daycard id={7} name="S" disabled={disabled} days={days} setDays={setDays} selected={false} />
             </WeekContainer>
             <ButtonContainer>
-                <CancelButton>Cancelar</CancelButton>
-                <SaveButton>Salvar</SaveButton>
+                <CancelButton onClick={() => setShowAddWindow(false)}>Cancelar</CancelButton>
+                <SaveButton
+                    onClick={postHabit}
+                >
+                    Salvar
+                </SaveButton>
             </ButtonContainer>
         </AddContainer>
     );
 }
 
 const AddContainer = styled.div`
+    display: ${(props) => props.showAddWindow ? "initial" : "none"};
     height: 180px;
     width: 100%;
     background: #FFFFFF;
