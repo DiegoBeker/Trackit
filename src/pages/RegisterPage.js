@@ -27,7 +27,10 @@ export default function RegisterPage() {
             setWaiting(false);
             navigate("/");
         })
-        .catch((err) => alert(err.response.data.message));
+        .catch((err) => {
+            alert(err.response.data.message)
+            setWaiting(false);
+        });
     }
     return (
         <PageContainer>

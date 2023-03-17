@@ -2,9 +2,12 @@ import styled from "styled-components";
 import {IoIosTrash} from "react-icons/io"
 import Daycard from "./DayCard";
 
+export default function Habit({id,name,days, deleteHabit}){
 
-export default function Habit({id,name,days}){
-    
+    function deleteCard(){
+        deleteHabit(id);
+    }
+
     return(
         <HabitCard data-test="habit-container">
             <p data-test="habit-name">{name}</p>
@@ -17,7 +20,7 @@ export default function Habit({id,name,days}){
                 <Daycard id={5} name="S" disabled={true} days={days}/>
                 <Daycard id={6} name="S" disabled={true} days={days}/>
             </WeekContainer>
-            <DeleteIcon data-test="habit-delete-btn">
+            <DeleteIcon onClick={deleteCard} data-test="habit-delete-btn">
                 <IoIosTrash/>
             </DeleteIcon>
         </HabitCard>

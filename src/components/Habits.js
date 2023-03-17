@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Habit from "./Habit";
 
 
-export default function Habits({habits}){
+export default function Habits({habits,deleteHabit}){
 
     if(habits === undefined){
         return <>Carregando...</>
@@ -10,7 +10,7 @@ export default function Habits({habits}){
 
     return(
         <HabitContainer>
-            {habits.map((h) => <Habit key={h.id} id={h.id} name={h.name} days={h.days}/>)}
+            {habits.map((h) => <Habit key={h.id} id={h.id} name={h.name} days={h.days} deleteHabit={deleteHabit} />)}
         </HabitContainer>
     );
 }

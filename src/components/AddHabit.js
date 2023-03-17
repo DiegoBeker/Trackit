@@ -6,7 +6,7 @@ import { BASE_URL } from "../constants/urls";
 import { UserContext } from "../cotexts/UserContext";
 import Daycard from "./DayCard";
 
-export default function AddHabit({ showAddWindow, setShowAddWindow }) {
+export default function AddHabit({ showAddWindow, setShowAddWindow, refresh, setRefresh }) {
     const [disabled, setDisabled] = useState(false);
     const [days, setDays] = useState([]);
     const [name, setName] = useState("");
@@ -30,6 +30,8 @@ export default function AddHabit({ showAddWindow, setShowAddWindow }) {
             setWaiting(false);
             setDisabled(false);
             setDays([])
+            setName("");
+            setRefresh(!refresh)
         })
         .catch((err) => {
             setDisabled(false);
@@ -40,7 +42,7 @@ export default function AddHabit({ showAddWindow, setShowAddWindow }) {
 
     return (
         <AddContainer data-test="habit-create-container" showAddWindow={showAddWindow}>
-            <input data-test="habit-name-input" placeholder="nome do hábito" value={name} onChange={(e) => setName(e.target.value)} />
+            <input data-test="habit-name-input" placeholder="nome do hábito" disabled={disabled} value={name} onChange={(e) => setName(e.target.value)} />
             <WeekContainer>
                 <Daycard id={0} name="D" disabled={disabled} days={days} setDays={setDays} />
                 <Daycard id={1} name="S" disabled={disabled} days={days} setDays={setDays} />
@@ -51,9 +53,10 @@ export default function AddHabit({ showAddWindow, setShowAddWindow }) {
                 <Daycard id={6} name="S" disabled={disabled} days={days} setDays={setDays} />
             </WeekContainer>
             <ButtonContainer>
-                <CancelButton data-test="habit-create-cancel-btn" onClick={() => setShowAddWindow(false)}>Cancelar</CancelButton>
+                <CancelButton disabled={disabled} data-test="habit-create-cancel-btn" onClick={() => setShowAddWindow(false)}>Cancelar</CancelButton>
                 <SaveButton
                     data-test="habit-create-save-btn"
+                    disabled={disabled}
                     onClick={postHabit}
                 >
                     {

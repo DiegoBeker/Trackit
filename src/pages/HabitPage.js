@@ -12,7 +12,7 @@ export default function HabitPage() {
     const [showAddWindow, setShowAddWindow] = useState(false);
     const [habits, setHabits] = useState(undefined);
     const user = useContext(UserContext);
-    console.log(habits);
+    const [refresh,setRefresh] = useState(false);
 
     useEffect(()=>{
         const config = {
@@ -23,7 +23,19 @@ export default function HabitPage() {
         axios.get(`${BASE_URL}/habits`, config)
         .then((response) => setHabits(response.data))
         .catch((err) => console.log(err.response.data.message));
-    },[showAddWindow])
+        // eslint-disable-next-line
+    },[refresh])
+
+    function deleteHabit(id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        axios.delete(`${BASE_URL}/habits/${id}`,config)
+        .then((response) => setRefresh(!refresh))
+        .catch((err) => console.log(err));
+    }
 
     if(habits === undefined){
         return (
@@ -41,14 +53,14 @@ export default function HabitPage() {
                 <h2>Meus Hábitos</h2>
                 <button data-test="habit-create-btn" onClick={() => setShowAddWindow(true)}>+</button>
             </HabitMenu>
-            <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} />
+            <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} refresh={refresh} setRefresh={setRefresh}/>
             {
                 habits.length === 0 ?
                     <NoHabitsMessage>
                         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                     </NoHabitsMessage>
                     :
-                    <Habits habits={habits} />
+                    <Habits habits={habits}  deleteHabit={deleteHabit} />
             }
             <BottomMenu />
         </PageContainer>
