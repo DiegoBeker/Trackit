@@ -5,7 +5,8 @@ import Daycard from "./DayCard";
 export default function Habit({id,name,days, deleteHabit}){
 
     function deleteCard(){
-        deleteHabit(id);
+        if(window.confirm("Deseja deletar o Hábito?"))
+            deleteHabit(id);
     }
 
     return(
