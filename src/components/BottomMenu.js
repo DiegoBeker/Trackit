@@ -13,7 +13,7 @@ export default function BottomMenu() {
                 <Link data-test="today-link"  to="/hoje">
                 <CicleProgress>
                     <CircularProgressbar
-                        value={33}
+                        value={0}
                         text={"Hoje"}
                         background
                         backgroundPadding={6}

@@ -6,16 +6,17 @@ import { UserContext } from "../cotexts/UserContext";
 import axios from "axios";
 import { BASE_URL } from "../constants/urls";
 import { weekDays } from "../constants/weekdays"
-import {FaCheck} from "react-icons/fa"
+import HabitOfTheDay from "../components/HabitOfTheDay";
 
 export default function TodayPage() {
     const [date, setDate] = useState({ weekday: "", day: "", month: "" });
+    const [list, setList] = useState(undefined);
+    const [refresh,setRefresh] = useState(false);
     const user = useContext(UserContext);
-    console.log(date);
+    console.log(list);
 
     useEffect(() => {
         const today = new Date(Date.now());
-        console.log(today);
         setDate({ weekday: today.getUTCDay(), day: today.getUTCDate(), month: today.getMonth() })
         const config = {
             headers: {
@@ -23,10 +24,49 @@ export default function TodayPage() {
             }
         }
         axios.get(`${BASE_URL}/habits/today`, config)
-            .then((response) => console.log(response.data))
+            .then((response) => setList(response.data))
             .catch((err) => console.log(err.response.data.message));
         // eslint-disable-next-line
-    }, [])
+    }, [refresh]);
+
+    function checkHabit(id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        const body = [];
+        axios.post(`${BASE_URL}/habits/${id}/check`, body, config)
+        .then((response) => {
+            console.log(response)
+            setRefresh(!refresh)
+        })
+        .catch((err) => console.log(err));
+    }
+
+    function uncheckHabit(id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        const body = [];
+        axios.post(`${BASE_URL}/habits/${id}/uncheck`, body, config)
+        .then((response) => {
+            console.log(response)
+            setRefresh(!refresh)
+        })
+        .catch((err) => console.log(err));
+    }
+
+    if (list === undefined) {
+        return (
+            <PageContainer>
+                <NavBar />
+                <BottomMenu />
+            </PageContainer>
+        );
+    }
 
     return (
         <PageContainer>
@@ -36,23 +76,25 @@ export default function TodayPage() {
                 <span>Nenhum hábito concluído ainda</span>
             </ProgressInfo>
             <HabitsContainer>
-                <HabitOfTheDay>
-                    <div>
-                        <h3>Ler 1 capítulo de livro</h3>
-                        <p>Sequência atual: <span>3 dias</span></p>
-                        <p> Seu recorde: 5 dias</p>
-                    </div>
-                    <CheckButton>
-                        <FaCheck/>
-                    </CheckButton>
-                </HabitOfTheDay>
+                {list.map((l) => 
+                    (<HabitOfTheDay
+                        key={l.id}
+                        id={l.id}
+                        name={l.name}
+                        done={l.done}
+                        currentSequence={l.currentSequence}
+                        highestSequence={l.highestSequence}
+                        checkHabit={checkHabit}
+                        uncheckHabit={uncheckHabit}
+                    />)
+                )}
             </HabitsContainer>
             <BottomMenu />
         </PageContainer>
     );
 }
 const PageContainer = styled.div`
-    min-height: calc(100vh - 140px);
+    height: calc(100vh - 140px);
     margin: 70px 0px;
     padding: 8px 16px;
     display: flex;
@@ -81,41 +123,8 @@ const ProgressInfo = styled.div`
 `;
 
 const HabitsContainer = styled.div`
-
-`
-const CheckButton = styled.div`
-    width: 69px;
-    height: 69px;
-    background: #EBEBEB;
-    border: 1px solid #E7E7E7;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    svg{
-        font-size: 30px;
-        color: #FFFFFF;
-    }
-`;
-
-const HabitOfTheDay = styled.div`
-    height: 94px;
     width: 100%;
-    padding: 12px 14px;
-    background: #FFFFFF;
-    border-radius: 5px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 400;
-    color: #666666;
-    h3{
-        font-size: 20px;
-        line-height: 25px;
-        margin-bottom: 7px;
-    }
-    p{
-        font-size: 13px;
-        line-height: 16px;
-    }
-`
+    flex-direction: column;
+    overflow-y: scroll;
+`;
