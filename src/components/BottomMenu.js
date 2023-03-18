@@ -2,8 +2,13 @@ import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { ProgressContext } from "../cotexts/ProgressContext";
 
 export default function BottomMenu() {
+
+    const progress = useContext(ProgressContext);
+
     return (
         <MenuContainer data-test="menu">
             <ButtonsContainer>
@@ -13,7 +18,7 @@ export default function BottomMenu() {
                 <Link data-test="today-link"  to="/hoje">
                 <CicleProgress>
                     <CircularProgressbar
-                        value={0}
+                        value={progress}
                         text={"Hoje"}
                         background
                         backgroundPadding={6}

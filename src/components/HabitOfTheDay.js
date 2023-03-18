@@ -3,17 +3,18 @@ import { FaCheck } from "react-icons/fa"
 
 export default function HabitOfTheDay({ id, name, done, currentSequence, highestSequence, checkHabit, uncheckHabit }) {
     return (
-        <HabitOTD>
+        <HabitOTD data-test="today-habit-container">
             <div>
-                <h3>{name}</h3>
-                <p>Sequência atual: <Current done={done}>{currentSequence !== 1 ? currentSequence + " dias" : currentSequence + " dia"}</Current></p>
-                <p>
-                    Seu recorde: <Highest currentSequence={currentSequence} highestSequence={highestSequence}>
+                <h3 data-test="today-habit-name">{name}</h3>
+                <p data-test="today-habit-sequence">Sequência atual: <Current done={done}>{currentSequence !== 1 ? currentSequence + " dias" : currentSequence + " dia"}</Current></p>
+                <p data-test="today-habit-record">
+                    Seu recorde: <Highest currentSequence={currentSequence} highestSequence={highestSequence} done={done}>
                         {highestSequence !== 1 ? highestSequence + " dias" : highestSequence + " dia"}
                     </Highest>
                 </p>
             </div>
             <CheckButton
+                data-test="today-habit-check-btn"
                 done={done}
                 onClick={() => {
                     if (done) {
@@ -71,5 +72,5 @@ const Current = styled.span`
     color: ${({ done }) => done ? "#8FC549" : "#666666"};
 `
 const Highest = styled.span`
-    color: ${({ highestSequence,currentSequence }) => highestSequence === currentSequence && highestSequence > 0 ? "#8FC549" : "#666666"};
+    color: ${({ highestSequence,currentSequence,done }) => done && highestSequence === currentSequence && highestSequence > 0 ? "#8FC549" : "#666666"};
 `

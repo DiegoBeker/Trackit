@@ -8,12 +8,13 @@ import { BASE_URL } from "../constants/urls";
 import { weekDays } from "../constants/weekdays"
 import HabitOfTheDay from "../components/HabitOfTheDay";
 
-export default function TodayPage() {
+export default function TodayPage({setProgress}) {
     const [date, setDate] = useState({ weekday: "", day: "", month: "" });
     const [list, setList] = useState(undefined);
     const [refresh,setRefresh] = useState(false);
     const user = useContext(UserContext);
-    console.log(list);
+    const [total,setTotal] = useState(0);
+    const [completed,setCompleted] = useState(0);
 
     useEffect(() => {
         const today = new Date(Date.now());
@@ -24,7 +25,19 @@ export default function TodayPage() {
             }
         }
         axios.get(`${BASE_URL}/habits/today`, config)
-            .then((response) => setList(response.data))
+            .then((response) => {
+                const listAux = response.data;
+                let count = 0;
+                setList(listAux);
+                setTotal(listAux.length);
+                listAux.forEach(element => {
+                    if(element.done){
+                        count++;
+                    }
+                });
+                setCompleted(count);
+                setProgress(Math.ceil(count/listAux.length*100))
+            })
             .catch((err) => console.log(err.response.data.message));
         // eslint-disable-next-line
     }, [refresh]);
@@ -71,9 +84,9 @@ export default function TodayPage() {
     return (
         <PageContainer>
             <NavBar />
-            <ProgressInfo>
-                <h2>{weekDays[date.weekday]}, {date.day}/{(date.month + 1) > 9 ? (date.month + 1) : "0" + (date.month + 1)}</h2>
-                <span>Nenhum hábito concluído ainda</span>
+            <ProgressInfo completed={completed}>
+                <h2 data-test="today">{weekDays[date.weekday]}, {date.day}/{(date.month + 1) > 9 ? (date.month + 1) : "0" + (date.month + 1)}</h2>
+                <span data-test="today-counter">{completed ? `${Math.ceil(completed/total* 100)}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</span>
             </ProgressInfo>
             <HabitsContainer>
                 {list.map((l) => 
@@ -118,7 +131,7 @@ const ProgressInfo = styled.div`
         font-weight: 400;
         font-size: 18px;
         line-height: 22px;
-        color: #BABABA;
+        color: ${({completed}) => completed ? "#8FC549" : "#BABABA" };
     }
 `;
 
