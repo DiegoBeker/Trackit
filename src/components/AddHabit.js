@@ -34,9 +34,9 @@ export default function AddHabit({ showAddWindow, setShowAddWindow, refresh, set
             setRefresh(!refresh)
         })
         .catch((err) => {
+            alert(err.response.data.message);
             setDisabled(false);
             setWaiting(false);
-            alert(err.response.data.message);
         })
     }
 
@@ -87,6 +87,7 @@ const AddContainer = styled.div`
     background: #FFFFFF;
     border-radius: 5px;
     padding: 10px 18px;
+    margin-top: 10px;
     input{
         width: 303px;
         height: 45px;

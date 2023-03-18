@@ -50,10 +50,12 @@ export default function HabitPage() {
         <PageContainer>
             <NavBar />
             <HabitMenu>
-                <h2>Meus Hábitos</h2>
-                <button data-test="habit-create-btn" onClick={() => setShowAddWindow(true)}>+</button>
+                <Container>
+                    <h2>Meus Hábitos</h2>
+                    <AddButton data-test="habit-create-btn" onClick={() => setShowAddWindow(true)}>+</AddButton>
+                </Container>
+                <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} refresh={refresh} setRefresh={setRefresh}/>
             </HabitMenu>
-            <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} refresh={refresh} setRefresh={setRefresh}/>
             {
                 habits.length === 0 ?
                     <NoHabitsMessage>
@@ -84,6 +86,7 @@ const HabitMenu = styled.div`
     width: 100%;
     margin: 20px 0;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     h2{
@@ -91,15 +94,6 @@ const HabitMenu = styled.div`
         font-size: 23px;
         line-height: 29px;
         color: #126BA5;
-    }
-    button{
-        width: 40px;
-        height: 35px;
-        font-weight: 400;
-        font-size: 23px;
-        color: #FFFFFF;
-        background: #52B6FF;
-        border-radius: 4.63636px;
     }
 `;
 
@@ -109,4 +103,20 @@ const NoHabitsMessage = styled.p`
     font-size: 18px;
     line-height: 22px;
     color: #666666;
+`
+
+const AddButton = styled.button`
+        width: 40px;
+        height: 35px;
+        font-weight: 400;
+        font-size: 23px;
+        color: #FFFFFF;
+        background: #52B6FF;
+        border-radius: 5px;
+`;
+
+const Container = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 `

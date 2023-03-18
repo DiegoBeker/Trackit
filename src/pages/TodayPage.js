@@ -51,7 +51,6 @@ export default function TodayPage({setProgress}) {
         const body = [];
         axios.post(`${BASE_URL}/habits/${id}/check`, body, config)
         .then((response) => {
-            console.log(response)
             setRefresh(!refresh)
         })
         .catch((err) => console.log(err));
@@ -66,7 +65,6 @@ export default function TodayPage({setProgress}) {
         const body = [];
         axios.post(`${BASE_URL}/habits/${id}/uncheck`, body, config)
         .then((response) => {
-            console.log(response)
             setRefresh(!refresh)
         })
         .catch((err) => console.log(err));
