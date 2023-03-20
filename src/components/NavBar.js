@@ -4,6 +4,15 @@ import { UserContext } from "../cotexts/UserContext";
 
 export default function NavBar(){
     const user = useContext(UserContext);
+
+    if(user === undefined){
+        return(
+            <NavBarContainer data-test="header">
+            <h1>Trackit</h1>
+        </NavBarContainer>
+        );
+    }
+    
     return(
         <NavBarContainer data-test="header">
             <h1>Trackit</h1>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AddHabit from "../components/AddHabit";
 import BottomMenu from "../components/BottomMenu";
@@ -12,36 +13,41 @@ export default function HabitPage() {
     const [showAddWindow, setShowAddWindow] = useState(false);
     const [habits, setHabits] = useState(undefined);
     const user = useContext(UserContext);
-    const [refresh,setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const navigate = useNavigate();
 
-    useEffect(()=>{
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${user.token}`
+    useEffect(() => {
+        if (user) {
+            const config = {
+                headers: {
+                    "Authorization": `Bearer ${user.token}`
+                }
             }
+            axios.get(`${BASE_URL}/habits`, config)
+                .then((response) => setHabits(response.data))
+                .catch((err) => console.log(err.response.data.message));
+        } else {
+            navigate("/");
         }
-        axios.get(`${BASE_URL}/habits`, config)
-        .then((response) => setHabits(response.data))
-        .catch((err) => console.log(err.response.data.message));
         // eslint-disable-next-line
-    },[refresh])
+    }, [refresh])
 
-    function deleteHabit(id){
+    function deleteHabit(id) {
         const config = {
             headers: {
                 "Authorization": `Bearer ${user.token}`
             }
         }
-        axios.delete(`${BASE_URL}/habits/${id}`,config)
-        .then((response) => setRefresh(!refresh))
-        .catch((err) => console.log(err));
+        axios.delete(`${BASE_URL}/habits/${id}`, config)
+            .then((response) => setRefresh(!refresh))
+            .catch((err) => console.log(err));
     }
 
-    if(habits === undefined){
+    if (habits === undefined) {
         return (
             <PageContainer>
-                <NavBar/>
-                <BottomMenu/>
+                <NavBar />
+                <BottomMenu />
             </PageContainer>
         );
     }
@@ -54,7 +60,7 @@ export default function HabitPage() {
                     <h2>Meus Hábitos</h2>
                     <AddButton data-test="habit-create-btn" onClick={() => setShowAddWindow(true)}>+</AddButton>
                 </Container>
-                <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} refresh={refresh} setRefresh={setRefresh}/>
+                <AddHabit showAddWindow={showAddWindow} setShowAddWindow={setShowAddWindow} refresh={refresh} setRefresh={setRefresh} />
             </HabitMenu>
             {
                 habits.length === 0 ?
@@ -62,7 +68,7 @@ export default function HabitPage() {
                         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                     </NoHabitsMessage>
                     :
-                    <Habits habits={habits}  deleteHabit={deleteHabit} />
+                    <Habits habits={habits} deleteHabit={deleteHabit} />
             }
             <BottomMenu />
         </PageContainer>
