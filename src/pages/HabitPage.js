@@ -22,7 +22,7 @@ export default function HabitPage() {
                 headers: {
                     "Authorization": `Bearer ${user.token}`
                 }
-            }
+            };
             axios.get(`${BASE_URL}/habits`, config)
                 .then((response) => setHabits(response.data))
                 .catch((err) => console.log(err.response.data.message));
@@ -30,16 +30,16 @@ export default function HabitPage() {
             navigate("/");
         }
         // eslint-disable-next-line
-    }, [refresh])
+    }, [refresh]);
 
     function deleteHabit(id) {
         const config = {
             headers: {
                 "Authorization": `Bearer ${user.token}`
             }
-        }
+        };
         axios.delete(`${BASE_URL}/habits/${id}`, config)
-            .then((response) => setRefresh(!refresh))
+            .then(() => setRefresh(!refresh))
             .catch((err) => console.log(err));
     }
 
@@ -109,7 +109,7 @@ const NoHabitsMessage = styled.p`
     font-size: 18px;
     line-height: 22px;
     color: #666666;
-`
+`;
 
 const AddButton = styled.button`
         width: 40px;
@@ -125,4 +125,4 @@ const Container = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-`
+`;

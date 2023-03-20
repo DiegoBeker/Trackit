@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
 import { BASE_URL } from "../constants/urls";
 import { ThreeDots } from "react-loader-spinner";
 
@@ -12,7 +12,7 @@ export default function LoginPage({ setUser }) {
     const navigate = useNavigate();
 
     function handleChange(event) {
-        setBody({ ...body, [event.target.name]: event.target.value })
+        setBody({ ...body, [event.target.name]: event.target.value });
     }
 
     function login(event) {
@@ -20,7 +20,6 @@ export default function LoginPage({ setUser }) {
         setWaiting(true);
         axios.post(`${BASE_URL}/auth/login`, body)
             .then((response) => {
-                console.log(response.data)
                 setUser(response.data);
                 setWaiting(false);
                 navigate("/hoje");

@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import NavBar from "../components/NavBar"
-import BottomMenu from "../components/BottomMenu"
+import NavBar from "../components/NavBar";
+import BottomMenu from "../components/BottomMenu";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../cotexts/UserContext";
 import axios from "axios";
 import { BASE_URL } from "../constants/urls";
-import { weekDays } from "../constants/weekdays"
+import { weekDays } from "../constants/weekdays";
 import HabitOfTheDay from "../components/HabitOfTheDay";
 import { useNavigate } from "react-router-dom";
 
@@ -20,13 +20,13 @@ export default function TodayPage({ setProgress }) {
 
     useEffect(() => {
         const today = new Date(Date.now());
-        setDate({ weekday: today.getUTCDay(), day: today.getUTCDate(), month: today.getMonth() })
+        setDate({ weekday: today.getUTCDay(), day: today.getUTCDate(), month: today.getMonth() });
         if (user) {
             const config = {
                 headers: {
                     "Authorization": `Bearer ${user.token}`
                 }
-            }
+            };
             axios.get(`${BASE_URL}/habits/today`, config)
                 .then((response) => {
                     const listAux = response.data;
@@ -39,7 +39,7 @@ export default function TodayPage({ setProgress }) {
                         }
                     });
                     setCompleted(count);
-                    setProgress(Math.ceil(count / listAux.length * 100))
+                    setProgress(Math.ceil(count / listAux.length * 100));
                 })
                 .catch((err) => console.log(err.response.data.message));
         }else{
@@ -53,11 +53,11 @@ export default function TodayPage({ setProgress }) {
             headers: {
                 "Authorization": `Bearer ${user.token}`
             }
-        }
+        };
         const body = [];
         axios.post(`${BASE_URL}/habits/${id}/check`, body, config)
-            .then((response) => {
-                setRefresh(!refresh)
+            .then(() => {
+                setRefresh(!refresh);
             })
             .catch((err) => console.log(err));
     }
@@ -67,11 +67,11 @@ export default function TodayPage({ setProgress }) {
             headers: {
                 "Authorization": `Bearer ${user.token}`
             }
-        }
+        };
         const body = [];
         axios.post(`${BASE_URL}/habits/${id}/uncheck`, body, config)
-            .then((response) => {
-                setRefresh(!refresh)
+            .then(() => {
+                setRefresh(!refresh);
             })
             .catch((err) => console.log(err));
     }

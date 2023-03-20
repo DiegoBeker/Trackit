@@ -2,21 +2,21 @@ import { useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../cotexts/UserContext";
 
-export default function NavBar(){
+export default function NavBar() {
     const user = useContext(UserContext);
 
-    if(user === undefined){
-        return(
+    if (user === undefined) {
+        return (
             <NavBarContainer data-test="header">
-            <h1>Trackit</h1>
-        </NavBarContainer>
+                <h1>Trackit</h1>
+            </NavBarContainer>
         );
     }
-    
-    return(
+
+    return (
         <NavBarContainer data-test="header">
             <h1>Trackit</h1>
-            <ProfilePicture src={user.image} alt="Picture"/>
+            <ProfilePicture src={user.image} alt="Picture" />
         </NavBarContainer>
     );
 }
@@ -47,4 +47,4 @@ const ProfilePicture = styled.img`
     width: 51px;
     height: 51px;
     border-radius: 98.5px;
-`
+`;

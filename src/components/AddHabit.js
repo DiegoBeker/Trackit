@@ -14,30 +14,29 @@ export default function AddHabit({ showAddWindow, setShowAddWindow, refresh, set
     const user = useContext(UserContext);
 
     function postHabit() {
-        const body = {name:name, days: days}
+        const body = {name, days};
         const config = {
             headers: {
                 "Authorization": `Bearer ${user.token}`
             }
-        }
+        };
         setWaiting(true);
         setDisabled(true);
         console.log(body);
         axios.post(`${BASE_URL}/habits`, body, config)
-        .then((response) => {
-            console.log(response.data)
+        .then(() => {
             setShowAddWindow(false);
             setWaiting(false);
             setDisabled(false);
-            setDays([])
+            setDays([]);
             setName("");
-            setRefresh(!refresh)
+            setRefresh(!refresh);
         })
         .catch((err) => {
             alert(err.response.data.message);
             setDisabled(false);
             setWaiting(false);
-        })
+        });
     }
 
     return (

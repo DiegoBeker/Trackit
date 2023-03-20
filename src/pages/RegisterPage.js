@@ -3,34 +3,34 @@ import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/logo.png"
-import {BASE_URL} from "../constants/urls"
+import logo from "../assets/logo.png";
+import { BASE_URL } from "../constants/urls";
 
 
 export default function RegisterPage() {
-    const [form,setForm] = useState({email:"", password:"", name:"", image:""});
+    const [form, setForm] = useState({ email: "", password: "", name: "", image: "" });
     const [waiting, setWaiting] = useState(false);
     const navigate = useNavigate();
-    
-    function handleChange(event){
-        setForm({...form, [event.target.name]: event.target.value})
+
+    function handleChange(event) {
+        setForm({ ...form, [event.target.name]: event.target.value });
     }
 
-    function register(event){
+    function register(event) {
         event.preventDefault();
-        const body = {...form};
+        const body = { ...form };
         setWaiting(true);
 
-        axios.post(`${BASE_URL}/auth/sign-up`,body)
-        .then((response)=> {
-            console.log(response);
-            setWaiting(false);
-            navigate("/");
-        })
-        .catch((err) => {
-            alert(err.response.data.message)
-            setWaiting(false);
-        });
+        axios.post(`${BASE_URL}/auth/sign-up`, body)
+            .then((response) => {
+                console.log(response);
+                setWaiting(false);
+                navigate("/");
+            })
+            .catch((err) => {
+                alert(err.response.data.message);
+                setWaiting(false);
+            });
     }
     return (
         <PageContainer>

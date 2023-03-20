@@ -1,28 +1,29 @@
 import styled from "styled-components";
-import {IoIosTrash} from "react-icons/io"
+import { IoIosTrash } from "react-icons/io";
 import Daycard from "./DayCard";
 
-export default function Habit({id,name,days, deleteHabit}){
+export default function Habit({ id, name, days, deleteHabit }) {
 
-    function deleteCard(){
-        if(window.confirm("Deseja deletar o Hábito?"))
+    function deleteCard() {
+        if (window.confirm("Deseja deletar o Hábito?")) {
             deleteHabit(id);
+        }
     }
 
-    return(
+    return (
         <HabitCard data-test="habit-container">
             <p data-test="habit-name">{name}</p>
             <WeekContainer>
-                <Daycard id={0} name="D" disabled={true} days={days}/>
-                <Daycard id={1} name="S" disabled={true} days={days}/>
-                <Daycard id={2} name="T" disabled={true} days={days}/>
-                <Daycard id={3} name="Q" disabled={true} days={days}/>
-                <Daycard id={4} name="Q" disabled={true} days={days}/>
-                <Daycard id={5} name="S" disabled={true} days={days}/>
-                <Daycard id={6} name="S" disabled={true} days={days}/>
+                <Daycard id={0} name="D" disabled={true} days={days} />
+                <Daycard id={1} name="S" disabled={true} days={days} />
+                <Daycard id={2} name="T" disabled={true} days={days} />
+                <Daycard id={3} name="Q" disabled={true} days={days} />
+                <Daycard id={4} name="Q" disabled={true} days={days} />
+                <Daycard id={5} name="S" disabled={true} days={days} />
+                <Daycard id={6} name="S" disabled={true} days={days} />
             </WeekContainer>
             <DeleteIcon onClick={deleteCard} data-test="habit-delete-btn">
-                <IoIosTrash/>
+                <IoIosTrash />
             </DeleteIcon>
         </HabitCard>
     );
@@ -42,7 +43,7 @@ const HabitCard = styled.div`
         line-height: 25px;
         color: #666666;
     }
-`
+`;
 const WeekContainer = styled.div`
     display: flex;
     margin: 8px 0;
@@ -54,4 +55,4 @@ const DeleteIcon = styled.div`
     right: 8px;
     font-size: 24px;
     color: #666666;
-`
+`;

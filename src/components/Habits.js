@@ -5,7 +5,7 @@ import Habit from "./Habit";
 export default function Habits({habits,deleteHabit}){
 
     if(habits === undefined){
-        return <>Carregando...</>
+        return <>Carregando...</>;
     }
 
     return(

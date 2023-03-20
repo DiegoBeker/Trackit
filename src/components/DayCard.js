@@ -1,19 +1,17 @@
-import { useState } from "react";
 import styled from "styled-components";
 
-export default function Daycard({id, name, disabled, days, setDays}){
-    
-    //console.log(days);
-    function toggleDay(){
-        if(!days.includes(id)){
+export default function Daycard({ id, name, disabled, days, setDays }) {
+
+    function toggleDay() {
+        if (!days.includes(id)) {
             setDays([...days, id]);
-        }else{
-            setDays(days.filter((d)=> d !==id))
+        } else {
+            setDays(days.filter((d) => d !== id));
         }
     }
 
-    return(
-        <DayButton data-test="habit-day"  id={id} days={days} disabled={disabled} onClick={toggleDay}>{name}</DayButton>
+    return (
+        <DayButton data-test="habit-day" id={id} days={days} disabled={disabled} onClick={toggleDay}>{name}</DayButton>
     );
 }
 
@@ -28,4 +26,4 @@ const DayButton = styled.button`
     font-size: 20px;
     line-height: 25px;
     color: ${(props) => props.days.includes(props.id) ? "#FFFFFF" : "#D4D4D4"};
-`
+`;

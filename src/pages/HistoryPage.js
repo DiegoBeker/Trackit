@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import NavBar from "../components/NavBar"
-import BottomMenu from "../components/BottomMenu"
+import NavBar from "../components/NavBar";
+import BottomMenu from "../components/BottomMenu";
 
-export default function HistoryPage(){
-    return(
+export default function HistoryPage() {
+    return (
         <PageContainer>
-            <NavBar/>
+            <NavBar />
             <Message>
                 <h2>Histórico</h2>
                 <span>Em breve você poderá ver o histórico dos seus hábitos aqui!</span>
             </Message>
-            <BottomMenu/>
+            <BottomMenu />
         </PageContainer>
     );
 }
