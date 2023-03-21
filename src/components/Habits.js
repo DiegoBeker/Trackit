@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import Habit from "./Habit";
 
+export default function Habits({ habits, deleteHabit }) {
 
-export default function Habits({habits,deleteHabit}){
-
-    if(habits === undefined){
-        return <>Carregando...</>;
+    if (habits === undefined) {
+        return <></>;
     }
 
-    return(
+    return (
         <HabitContainer>
             {habits.map((h) => <Habit key={h.id} id={h.id} name={h.name} days={h.days} deleteHabit={deleteHabit} />)}
         </HabitContainer>

@@ -1,15 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
 import { BASE_URL } from "../constants/urls";
 import { ThreeDots } from "react-loader-spinner";
+import { UserContext } from "../cotexts/UserContext";
 
-export default function LoginPage({ setUser }) {
+export default function LoginPage() {
     const [body, setBody] = useState({ email: "", password: "" });
     const [waiting, setWaiting] = useState(false);
     const navigate = useNavigate();
+    const {setUser} = useContext(UserContext);
 
     function handleChange(event) {
         setBody({ ...body, [event.target.name]: event.target.value });

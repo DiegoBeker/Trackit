@@ -13,11 +13,11 @@ function App() {
   const [progress, setProgress] = useState(0);
 
   return (
-    <ProgressContext.Provider value={progress}>
-      <UserContext.Provider value={user}>
+    <ProgressContext.Provider value={{progress:progress,setProgress:setProgress}}>
+      <UserContext.Provider value={{user:user, setUser: setUser}}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LoginPage setUser={setUser} />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/cadastro" element={<RegisterPage />} />
             <Route path="/habitos" element={<HabitPage />} />
             <Route path="/hoje" element={<TodayPage setProgress={setProgress} />} />

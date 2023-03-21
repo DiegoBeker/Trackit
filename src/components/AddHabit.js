@@ -11,7 +11,7 @@ export default function AddHabit({ showAddWindow, setShowAddWindow, refresh, set
     const [days, setDays] = useState([]);
     const [name, setName] = useState("");
     const [waiting,setWaiting] = useState(false);
-    const user = useContext(UserContext);
+    const {user} = useContext(UserContext);
 
     function postHabit() {
         const body = {name, days};

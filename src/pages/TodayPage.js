@@ -8,15 +8,18 @@ import { BASE_URL } from "../constants/urls";
 import { weekDays } from "../constants/weekdays";
 import HabitOfTheDay from "../components/HabitOfTheDay";
 import { useNavigate } from "react-router-dom";
+import { Grid } from "react-loader-spinner";
+import { ProgressContext } from "../cotexts/ProgressContext";
 
-export default function TodayPage({ setProgress }) {
+export default function TodayPage() {
     const [date, setDate] = useState({ weekday: "", day: "", month: "" });
     const [list, setList] = useState(undefined);
     const [refresh, setRefresh] = useState(false);
-    const user = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [total, setTotal] = useState(0);
     const [completed, setCompleted] = useState(0);
     const navigate = useNavigate();
+    const {setProgress} = useContext(ProgressContext);
 
     useEffect(() => {
         const today = new Date(Date.now());
@@ -80,6 +83,18 @@ export default function TodayPage({ setProgress }) {
         return (
             <PageContainer>
                 <NavBar />
+                <Loading>
+                    <Grid
+                        height="80"
+                        width="80"
+                        color="#52B6FF"
+                        ariaLabel="grid-loading"
+                        radius="10.5"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    />
+                </Loading>
                 <BottomMenu />
             </PageContainer>
         );
@@ -144,4 +159,10 @@ const HabitsContainer = styled.div`
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+`;
+
+const Loading = styled.div`
+    width: 80px;
+    height: 80px;
+    margin: auto;
 `;

@@ -8,11 +8,12 @@ import Habits from "../components/Habits";
 import NavBar from "../components/NavBar";
 import { BASE_URL } from "../constants/urls";
 import { UserContext } from "../cotexts/UserContext";
+import { Grid } from "react-loader-spinner";
 
 export default function HabitPage() {
     const [showAddWindow, setShowAddWindow] = useState(false);
     const [habits, setHabits] = useState(undefined);
-    const user = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate();
 
@@ -47,6 +48,18 @@ export default function HabitPage() {
         return (
             <PageContainer>
                 <NavBar />
+                <Loading>
+                    <Grid
+                        height="80"
+                        width="80"
+                        color="#52B6FF"
+                        ariaLabel="grid-loading"
+                        radius="10.5"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    />
+                </Loading>
                 <BottomMenu />
             </PageContainer>
         );
@@ -125,4 +138,10 @@ const Container = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
+`;
+
+const Loading = styled.div`
+    width: 80px;
+    height: 80px;
+    margin: auto 0;
 `;

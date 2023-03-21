@@ -7,7 +7,7 @@ import { ProgressContext } from "../cotexts/ProgressContext";
 
 export default function BottomMenu() {
 
-    const progress = useContext(ProgressContext);
+    const {progress} = useContext(ProgressContext);
 
     return (
         <MenuContainer data-test="menu">

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { UserContext } from "../cotexts/UserContext";
 
 export default function NavBar() {
-    const user = useContext(UserContext);
+    const {user} = useContext(UserContext);
 
     if (user === undefined) {
         return (
